@@ -4,7 +4,7 @@
 Vocabulary Bank Rules
 
 ## 2. Mục đích của tài liệu
-Tài liệu này định nghĩa quy tắc chọn, nhóm và dùng từ vựng trong app. Mục tiêu là giúp toàn bộ app có vocabul kiểm soát, đúng cấp độ và phục vụ mục tiêu giao tiếp.
+Tài liệu này định nghĩa quy tắc chọn, nhóm và dùng từ vựng trong app. Mục tiêu là giúp toàn bộ app có hệ thống từ vựng được kiểm soát, đúng cấp độ và phục vụ mục tiêu giao tiếp.
 
 ## 3. Vai trò của vocabulary bank
 Vocabulary bank không phải danh sách từ học thuộc. Nó là nguồn từ vựng có kiểm soát để phục vụ lesson, dialogue, practice, review và test. Mỗi từ cần có lý do tại sao nó xuất hiện.

@@ -62,7 +62,7 @@ Practice cần giúp người học dùng pattern theo các bước tự nhiên:
 - Pattern mới xuất hiện mà không có ví dụ cụ thể.
 
 ## 11. Tiêu chí pattern tốt
-Pattern tốt là mẫu câu ngắn, tự nhiên, dễ thay từ, dễ lặp lại, dễ phát âm và có thể dùng trong nhiều tình huống đời thường. Pattern tốt là mẫu mà người học thấy dễ nhớ và sợ dùng.
+Pattern tốt là mẫu câu ngắn, tự nhiên, dễ thay từ, dễ lặp lại, dễ phát âm và có thể dùng trong nhiều tình huống đời thường. Pattern tốt là mẫu mà người học thấy dễ nhớ và dễ dùng.
 
 ## 12. Kết luận ngắn
 Pattern bank giúp app giữ trọng tâm giao tiếp thay vì lý thuyết ngữ pháp. Khi pattern nhất quán và được lặp lại đủ, người học dễ hình thành phản xạ tự nhiên hơn là dịch từng từ trong đầu khi nói.
