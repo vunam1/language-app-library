@@ -1,0 +1,178 @@
+:root {
+  color-scheme: light;
+  --bg: #f7f7f4;
+  --surface: #ffffff;
+  --text: #202124;
+  --muted: #60646c;
+  --line: #d9d9d2;
+  --accent: #1f6f5b;
+  --accent-dark: #174d40;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent-dark);
+  text-decoration: underline;
+}
+
+.page {
+  width: min(960px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 40px 0 64px;
+}
+
+.hero {
+  max-width: 680px;
+  padding: 56px 0;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0 0 16px;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  line-height: 1.1;
+}
+
+.hero p,
+.pageHeader p {
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 18px;
+  padding: 0 18px;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.button:hover {
+  background: var(--accent-dark);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 20px;
+}
+
+.pageHeader h1 {
+  font-size: clamp(1.8rem, 5vw, 2.75rem);
+}
+
+.lessonList {
+  display: grid;
+  gap: 10px;
+}
+
+.lessonItem {
+  display: grid;
+  gap: 4px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.lessonItem:hover {
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+.lessonPath {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.lessonTitle {
+  color: var(--text);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.markdown {
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.markdown h1 {
+  margin-bottom: 24px;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+}
+
+.markdown h2 {
+  margin: 32px 0 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 22px;
+  font-size: 1.35rem;
+}
+
+.markdown p {
+  margin: 0 0 14px;
+}
+
+.markdown ul,
+.markdown ol {
+  padding-left: 24px;
+}
+
+.markdown li {
+  margin-bottom: 6px;
+}
+
+@media (max-width: 640px) {
+  .page {
+    width: min(100% - 24px, 960px);
+    padding-top: 24px;
+  }
+
+  .pageHeader {
+    display: block;
+  }
+
+  .markdown {
+    padding: 18px;
+  }
+}
