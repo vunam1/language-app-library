@@ -87,10 +87,8 @@ Hoàn thành câu:
 
 Nối câu hỏi với câu trả lời:
 
-- What do you do in the morning?
-- I usually work.
-- What do you do in the evening?
-- I usually study.
+- What do you do in the morning? -> I usually work.
+- What do you do in the evening? -> I usually study.
 
 Chọn câu hỏi phù hợp:
 
