@@ -82,8 +82,8 @@ Sắp xếp đoạn giới thiệu:
 
 Hoàn thành câu:
 
-- What is your ____?
-- What is your ____?
+- What is your name?
+- What is your job?
 - I am from ____.
 - I am a ____.
 
