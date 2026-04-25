@@ -33,17 +33,15 @@ Người học gặp một bạn mới trong lớp học hoặc trong một bu�
 
 ## 7. Short dialogue
 
-Mai: Hello.
+Tom: Hello.
 
-Tom: Hi. My name is Tom.
+Mai: Hi.
+
+Tom: My name is Tom. What is your name?
 
 Mai: My name is Mai.
 
-Tom: What is your name?
-
-Mai: I am Mai.
-
-Tom: Nice to meet you.
+Tom: Nice to meet you, Mai.
 
 Mai: Nice to meet you, too.
 
