@@ -38,6 +38,19 @@ export type LessonNavigation = {
   next: LessonListItem | null;
 };
 
+export type LessonMarkdownSection = {
+  id: string;
+  heading: string;
+  number?: string;
+  content: string;
+};
+
+export type ParsedLessonMarkdown = {
+  title: string | null;
+  intro: string;
+  sections: LessonMarkdownSection[];
+};
+
 function isInsideLessonsRoot(filePath: string) {
   const resolvedPath = path.resolve(filePath);
   return (
@@ -92,6 +105,10 @@ function titleFromMarkdown(content: string, fallback: string) {
     .find((line) => line.startsWith("# "));
 
   return firstHeading?.replace(/^#\s+/, "").trim() || fallback;
+}
+
+function sectionNumberFromHeading(heading: string) {
+  return heading.match(/^(\d+)\./)?.[1];
 }
 
 function labelFromSegment(segment: string, prefix: string) {
@@ -183,6 +200,70 @@ export function getLessonNavigation(slug: string[]): LessonNavigation {
   return {
     previous: lessons[currentIndex - 1] ?? null,
     next: lessons[currentIndex + 1] ?? null,
+  };
+}
+
+export function parseLessonMarkdown(content: string): ParsedLessonMarkdown {
+  const lines = content.split(/\r?\n/);
+  const titleLineIndex = lines.findIndex((line) => line.startsWith("# "));
+  const title =
+    titleLineIndex >= 0 ? lines[titleLineIndex].replace(/^#\s+/, "").trim() : null;
+  const bodyLines =
+    titleLineIndex >= 0
+      ? lines.filter((_, index) => index !== titleLineIndex)
+      : lines;
+  const sections: LessonMarkdownSection[] = [];
+  const introLines: string[] = [];
+  let current:
+    | {
+        heading: string;
+        number?: string;
+        lines: string[];
+      }
+    | null = null;
+
+  for (const line of bodyLines) {
+    if (line.startsWith("## ")) {
+      if (current) {
+        const sectionIndex = sections.length + 1;
+        sections.push({
+          id: `section-${sectionIndex}`,
+          heading: current.heading,
+          number: current.number,
+          content: current.lines.join("\n").trim(),
+        });
+      }
+
+      const heading = line.replace(/^##\s+/, "").trim();
+      current = {
+        heading,
+        number: sectionNumberFromHeading(heading),
+        lines: [],
+      };
+      continue;
+    }
+
+    if (current) {
+      current.lines.push(line);
+    } else {
+      introLines.push(line);
+    }
+  }
+
+  if (current) {
+    const sectionIndex = sections.length + 1;
+    sections.push({
+      id: `section-${sectionIndex}`,
+      heading: current.heading,
+      number: current.number,
+      content: current.lines.join("\n").trim(),
+    });
+  }
+
+  return {
+    title,
+    intro: introLines.join("\n").trim(),
+    sections,
   };
 }
 

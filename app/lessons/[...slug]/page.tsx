@@ -5,6 +5,7 @@ import {
   getAllLessons,
   getLessonBySlug,
   getLessonNavigation,
+  parseLessonMarkdown,
 } from "@/lib/lessons";
 
 type LessonPageProps = {
@@ -28,6 +29,9 @@ export default async function LessonDetailPage({ params }: LessonPageProps) {
     notFound();
   }
 
+  const parsedLesson = parseLessonMarkdown(lesson.content);
+  const hasSections = parsedLesson.sections.length > 0;
+
   return (
     <main className="page">
       <div className="pageHeader">
@@ -39,9 +43,47 @@ export default async function LessonDetailPage({ params }: LessonPageProps) {
         <Link href="/lessons">Quay lại lessons</Link>
       </div>
 
-      <article className="markdown">
-        <ReactMarkdown>{lesson.content}</ReactMarkdown>
-      </article>
+      {hasSections ? (
+        <>
+          {parsedLesson.intro ? (
+            <article className="markdown lessonIntro">
+              <ReactMarkdown>{parsedLesson.intro}</ReactMarkdown>
+            </article>
+          ) : null}
+
+          <nav className="sectionNav" aria-label="Lesson sections">
+            <h2>Trong bài này</h2>
+            <ol className="sectionNavList">
+              {parsedLesson.sections.map((section) => (
+                <li key={section.id}>
+                  <a className="sectionAnchor" href={`#${section.id}`}>
+                    {section.heading}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+
+          <div className="lessonSections">
+            {parsedLesson.sections.map((section) => (
+              <section
+                className="lessonSectionCard"
+                id={section.id}
+                key={section.id}
+              >
+                <h2 className="lessonSectionHeading">{section.heading}</h2>
+                <div className="markdown sectionMarkdown">
+                  <ReactMarkdown>{section.content}</ReactMarkdown>
+                </div>
+              </section>
+            ))}
+          </div>
+        </>
+      ) : (
+        <article className="markdown">
+          <ReactMarkdown>{lesson.content}</ReactMarkdown>
+        </article>
+      )}
 
       <nav className="lessonNavigation" aria-label="Lesson navigation">
         {navigation.previous ? (

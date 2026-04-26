@@ -193,6 +193,65 @@ h1 {
   margin-bottom: 6px;
 }
 
+.lessonIntro {
+  margin-bottom: 16px;
+}
+
+.sectionNav {
+  margin-bottom: 20px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.sectionNav h2 {
+  margin: 0 0 12px;
+  font-size: 1.2rem;
+}
+
+.sectionNavList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 18px;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.sectionAnchor {
+  font-size: 0.95rem;
+}
+
+.lessonSections {
+  display: grid;
+  gap: 16px;
+}
+
+.lessonSectionCard {
+  scroll-margin-top: 20px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.lessonSectionHeading {
+  margin: 0 0 16px;
+  font-size: 1.3rem;
+}
+
+.sectionMarkdown {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.sectionMarkdown h1,
+.sectionMarkdown h2 {
+  margin-top: 0;
+}
+
 .lessonNavigation {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -233,6 +292,14 @@ h1 {
   }
 
   .markdown {
+    padding: 18px;
+  }
+
+  .sectionNavList {
+    grid-template-columns: 1fr;
+  }
+
+  .lessonSectionCard {
     padding: 18px;
   }
 
