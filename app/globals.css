@@ -459,6 +459,66 @@ h1 {
   font-weight: 700;
 }
 
+.speakingRecorder {
+  display: grid;
+  gap: 12px;
+  border: 1px solid #cfd8f1;
+  border-radius: 8px;
+  padding: 16px;
+  background: #ffffff;
+}
+
+.recorderControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.recorderButton,
+.recorderButtonSecondary {
+  min-height: 42px;
+  border-radius: 6px;
+  padding: 0 14px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+.recorderButton {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.recorderButton:hover {
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
+}
+
+.recorderButtonSecondary {
+  border: 1px solid var(--line);
+  background: #ffffff;
+  color: var(--text);
+}
+
+.recordingStatus {
+  margin: 0;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.audioPlayback {
+  width: 100%;
+}
+
+.recorderNotice {
+  margin: 0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  background: #fff3d7;
+  color: #70501b;
+}
+
 .sectionMarkdown-review,
 .sectionMarkdown-completion {
   padding: 16px;

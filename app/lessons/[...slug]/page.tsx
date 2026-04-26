@@ -10,6 +10,7 @@ import {
 } from "@/lib/lessons";
 import LessonCompletion from "@/components/LessonCompletion";
 import QuickQuiz from "@/components/QuickQuiz";
+import SpeakingRecorder from "@/components/SpeakingRecorder";
 
 type LessonPageProps = {
   params: Promise<{
@@ -184,6 +185,7 @@ export default async function LessonDetailPage({ params }: LessonPageProps) {
                       <div className="markdown sectionMarkdown">
                         <ReactMarkdown>{section.content}</ReactMarkdown>
                       </div>
+                      <SpeakingRecorder />
                     </div>
                   ) : (
                     <div
