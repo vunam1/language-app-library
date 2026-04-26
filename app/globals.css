@@ -442,6 +442,28 @@ h1 {
   gap: 14px;
 }
 
+.audioScriptSection {
+  display: grid;
+  gap: 14px;
+}
+
+.audioScriptCallout {
+  border: 1px solid #d7e8df;
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: #f6fbf8;
+}
+
+.audioScriptCallout p {
+  margin: 0;
+}
+
+.audioScriptCallout p:last-child {
+  color: var(--accent-dark);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
 .speakingCallout {
   border: 1px solid #cfd8f1;
   border-radius: 8px;
@@ -512,6 +534,89 @@ h1 {
 }
 
 .recorderNotice {
+  margin: 0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  background: #fff3d7;
+  color: #70501b;
+}
+
+.ttsPlayer {
+  display: grid;
+  gap: 14px;
+  border: 1px solid #d7e8df;
+  border-radius: 8px;
+  padding: 16px;
+  background: #ffffff;
+}
+
+.ttsHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ttsHeader h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.ttsControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ttsLineList {
+  display: grid;
+  gap: 8px;
+}
+
+.ttsLine {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: var(--surface-soft);
+}
+
+.ttsText {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.ttsButton,
+.ttsButtonSecondary {
+  min-height: 38px;
+  border-radius: 6px;
+  padding: 0 12px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+.ttsButton {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.ttsButton:hover {
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
+}
+
+.ttsButtonSecondary {
+  border: 1px solid var(--line);
+  background: #ffffff;
+  color: var(--text);
+}
+
+.ttsNotice {
   margin: 0;
   border-radius: 6px;
   padding: 10px 12px;
@@ -681,6 +786,12 @@ h1 {
   .dialogueSpeaker {
     width: fit-content;
     text-align: left;
+  }
+
+  .ttsHeader,
+  .ttsLine {
+    grid-template-columns: 1fr;
+    display: grid;
   }
 
   .lessonNavigation {

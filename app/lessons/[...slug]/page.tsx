@@ -11,6 +11,7 @@ import {
 import LessonCompletion from "@/components/LessonCompletion";
 import QuickQuiz from "@/components/QuickQuiz";
 import SpeakingRecorder from "@/components/SpeakingRecorder";
+import TextToSpeechPlayer from "@/components/TextToSpeechPlayer";
 
 type LessonPageProps = {
   params: Promise<{
@@ -186,6 +187,17 @@ export default async function LessonDetailPage({ params }: LessonPageProps) {
                         <ReactMarkdown>{section.content}</ReactMarkdown>
                       </div>
                       <SpeakingRecorder />
+                    </div>
+                  ) : sectionType === "audioScript" ? (
+                    <div className="audioScriptSection">
+                      <div className="audioScriptCallout">
+                        <p className="lessonMeta">Listening tool</p>
+                        <p>Hear words and sentences with browser speech.</p>
+                      </div>
+                      <div className="markdown sectionMarkdown">
+                        <ReactMarkdown>{section.content}</ReactMarkdown>
+                      </div>
+                      <TextToSpeechPlayer content={section.content} />
                     </div>
                   ) : (
                     <div
