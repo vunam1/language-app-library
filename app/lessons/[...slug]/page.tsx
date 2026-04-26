@@ -8,6 +8,7 @@ import {
   parseLessonMarkdown,
   parseQuickQuiz,
 } from "@/lib/lessons";
+import LessonCompletion from "@/components/LessonCompletion";
 import QuickQuiz from "@/components/QuickQuiz";
 
 type LessonPageProps = {
@@ -48,6 +49,8 @@ export default async function LessonDetailPage({ params }: LessonPageProps) {
         </div>
         <Link href="/lessons">Quay lại lessons</Link>
       </div>
+
+      <LessonCompletion slug={lesson.slug} title={lesson.title} />
 
       {hasSections ? (
         <>
