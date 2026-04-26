@@ -51,6 +51,17 @@ export type ParsedLessonMarkdown = {
   sections: LessonMarkdownSection[];
 };
 
+export type QuickQuizOption = {
+  key: string;
+  text: string;
+};
+
+export type QuickQuizQuestion = {
+  question: string;
+  options: QuickQuizOption[];
+  answer: string;
+};
+
 function isInsideLessonsRoot(filePath: string) {
   const resolvedPath = path.resolve(filePath);
   return (
@@ -265,6 +276,71 @@ export function parseLessonMarkdown(content: string): ParsedLessonMarkdown {
     intro: introLines.join("\n").trim(),
     sections,
   };
+}
+
+export function parseQuickQuiz(content: string): QuickQuizQuestion[] {
+  const questions: QuickQuizQuestion[] = [];
+  let current:
+    | {
+        question: string;
+        options: QuickQuizOption[];
+        answer: string | null;
+      }
+    | null = null;
+
+  const pushCurrent = () => {
+    if (!current) {
+      return;
+    }
+
+    if (current.question && current.options.length >= 2 && current.answer) {
+      questions.push({
+        question: current.question,
+        options: current.options,
+        answer: current.answer,
+      });
+    }
+  };
+
+  for (const rawLine of content.split(/\r?\n/)) {
+    const line = rawLine.trim();
+
+    if (!line) {
+      continue;
+    }
+
+    const questionMatch = line.match(/^\d+\.\s+(.+)$/);
+
+    if (questionMatch) {
+      pushCurrent();
+      current = {
+        question: questionMatch[1].trim(),
+        options: [],
+        answer: null,
+      };
+      continue;
+    }
+
+    const optionMatch = line.match(/^-\s*([A-Z])\.\s+(.+)$/);
+
+    if (optionMatch && current) {
+      current.options.push({
+        key: optionMatch[1].trim(),
+        text: optionMatch[2].trim(),
+      });
+      continue;
+    }
+
+    const answerMatch = line.match(/^(?:Đáp án|Dap an):\s*([A-Z])\b/i);
+
+    if (answerMatch && current) {
+      current.answer = answerMatch[1].trim().toUpperCase();
+    }
+  }
+
+  pushCurrent();
+
+  return questions;
 }
 
 export function getLessonBySlug(slug: string[]): LessonDetail | null {

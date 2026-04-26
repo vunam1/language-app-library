@@ -252,6 +252,78 @@ h1 {
   margin-top: 0;
 }
 
+.quizList {
+  display: grid;
+  gap: 14px;
+}
+
+.quizScore {
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: #e8f3ef;
+  color: var(--accent-dark);
+  font-weight: 700;
+}
+
+.quizQuestionCard {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfbf8;
+}
+
+.quizQuestionTitle {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.quizOptions {
+  display: grid;
+  gap: 8px;
+}
+
+.quizOptionButton {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+  align-items: start;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.quizOptionButton:hover {
+  border-color: var(--accent);
+}
+
+.quizOptionSelected {
+  border-color: var(--accent);
+}
+
+.quizOptionCorrect {
+  border-color: #2f7d4f;
+  background: #edf8f0;
+}
+
+.quizOptionWrong {
+  border-color: #b84a4a;
+  background: #fff0f0;
+}
+
+.quizFeedback {
+  margin: 0;
+  font-weight: 700;
+}
+
 .lessonNavigation {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
