@@ -4,11 +4,13 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import type {
+  ControlledPracticeActivity,
   LessonListItem,
   LessonMarkdownSection,
   QuickQuizQuestion,
 } from "@/lib/lessons";
 import { markLessonCompleted } from "@/lib/progress";
+import ControlledPractice from "@/components/ControlledPractice";
 import QuickQuiz from "@/components/QuickQuiz";
 import SpeakingRecorder from "@/components/SpeakingRecorder";
 import TextToSpeechPlayer from "@/components/TextToSpeechPlayer";
@@ -135,6 +137,93 @@ function parseQuickQuiz(content: string): QuickQuizQuestion[] {
 
   pushCurrent();
   return questions;
+}
+
+function inferBlankAnswer(prompt: string): string | null {
+  const normalizedPrompt = prompt.toLowerCase().trim();
+  const knownAnswers: Array<[RegExp, string]> = [
+    [/good ____\.?$/, "morning"],
+    [/how are ____\??$/, "you"],
+    [/i am ____\.?$/, "good"],
+    [/nice to ____ you\.?$/, "meet"],
+    [/my name ____/i, "is"],
+    [/i am from ____\.?$/, "Vietnam"],
+    [/i am a ____\.?$/, "student"],
+    [/this is my ____\.?$/, "friend"],
+    [/in the morning, i ____\.?$/, "wake up"],
+    [/i eat ____\.?$/, "breakfast"],
+    [/i go to ____\.?$/, "work"],
+    [/in the evening, i go ____\.?$/, "home"],
+    [/at night, i ____\.?$/, "sleep"],
+    [/i sleep at ____\.?$/, "night"],
+    [/i usually ____\.?$/, "work"],
+    [/i usually eat at ____\.?$/, "home"],
+    [/what do you usually ____\??$/, "do"],
+  ];
+
+  return knownAnswers.find(([pattern]) => pattern.test(normalizedPrompt))?.[1] ?? null;
+}
+
+function parseControlledPractice(content: string): ControlledPracticeActivity[] {
+  const blocks: Array<{ title: string; items: string[] }> = [];
+  let current: { title: string; items: string[] } | null = null;
+
+  for (const rawLine of content.split(/\r?\n/)) {
+    const line = rawLine.trim();
+
+    if (!line) continue;
+
+    if (line.endsWith(":") && !line.startsWith("- ")) {
+      if (current && current.items.length > 0) {
+        blocks.push(current);
+      }
+
+      current = {
+        title: line.replace(/:$/, "").trim(),
+        items: [],
+      };
+      continue;
+    }
+
+    if (line.startsWith("- ") && current) {
+      current.items.push(line.replace(/^-\s+/, "").trim());
+    }
+  }
+
+  if (current && current.items.length > 0) {
+    blocks.push(current);
+  }
+
+  return blocks
+    .map((block): ControlledPracticeActivity | null => {
+      if (/hoàn thành|hoan thanh|điền|dien/i.test(block.title)) {
+        return {
+          type: "fillBlank",
+          title: block.title,
+          items: block.items.map((prompt) => ({
+            prompt,
+            answer: prompt.includes("____") ? inferBlankAnswer(prompt) : null,
+          })),
+        };
+      }
+
+      if (/chọn|chon|phù hợp|phu hop/i.test(block.title)) {
+        return {
+          type: "multipleChoice",
+          title: block.title,
+          prompt: "Chọn câu phù hợp",
+          options: block.items,
+          answer: block.items[0],
+        };
+      }
+
+      return {
+        type: "tapToPractice",
+        title: block.title,
+        options: block.items,
+      };
+    })
+    .filter((activity): activity is ControlledPracticeActivity => Boolean(activity));
 }
 
 function createLessonSteps(sections: LessonMarkdownSection[]): LessonStep[] {
@@ -283,6 +372,17 @@ function StepContent({ step }: { step: LessonStep }) {
 
     return questions.length > 0 ? (
       <QuickQuiz questions={questions} />
+    ) : (
+      <MarkdownPanel section={section} variant={step.type} />
+    );
+  }
+
+  if (step.type === "controlledPractice") {
+    const section = step.sections[0];
+    const activities = parseControlledPractice(section.content);
+
+    return activities.length > 0 ? (
+      <ControlledPractice activities={activities} />
     ) : (
       <MarkdownPanel section={section} variant={step.type} />
     );

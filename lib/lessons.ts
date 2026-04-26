@@ -62,6 +62,28 @@ export type QuickQuizQuestion = {
   answer: string;
 };
 
+export type ControlledPracticeActivity =
+  | {
+      type: "multipleChoice";
+      title: string;
+      prompt: string;
+      options: string[];
+      answer: string;
+    }
+  | {
+      type: "fillBlank";
+      title: string;
+      items: Array<{
+        prompt: string;
+        answer: string | null;
+      }>;
+    }
+  | {
+      type: "tapToPractice";
+      title: string;
+      options: string[];
+    };
+
 function isInsideLessonsRoot(filePath: string) {
   const resolvedPath = path.resolve(filePath);
   return (
@@ -341,6 +363,126 @@ export function parseQuickQuiz(content: string): QuickQuizQuestion[] {
   pushCurrent();
 
   return questions;
+}
+
+function inferBlankAnswer(prompt: string): string | null {
+  const normalizedPrompt = prompt.toLowerCase().trim();
+  const knownAnswers: Array<[RegExp, string]> = [
+    [/good ____\.?$/, "morning"],
+    [/how are ____\??$/, "you"],
+    [/i am ____\.?$/, "good"],
+    [/nice to ____ you\.?$/, "meet"],
+    [/my name ____ .+/i, "is"],
+    [/my name ____/i, "is"],
+    [/what is your ____\??$/, "name"],
+    [/what is your ____\??$/, "job"],
+    [/i am from ____\.?$/, "Vietnam"],
+    [/i am a ____\.?$/, "student"],
+    [/this is my ____\.?$/, "friend"],
+    [/in the morning, i ____\.?$/, "wake up"],
+    [/i eat ____\.?$/, "breakfast"],
+    [/i go to ____\.?$/, "work"],
+    [/at night, i ____\.?$/, "sleep"],
+    [/i sleep at ____\.?$/, "night"],
+    [/i usually ____\.?$/, "work"],
+    [/i usually eat at ____\.?$/, "home"],
+  ];
+
+  return knownAnswers.find(([pattern]) => pattern.test(normalizedPrompt))?.[1] ?? null;
+}
+
+function isMultipleChoiceTitle(title: string) {
+  return /chọn|chon|phù hợp|phu hop/i.test(title);
+}
+
+function isFillBlankTitle(title: string) {
+  return /hoàn thành|hoan thanh|điền|dien/i.test(title);
+}
+
+function isTapPracticeTitle(title: string) {
+  return /thay|nối|noi|sắp xếp|sap xep|mẫu|mau/i.test(title);
+}
+
+export function parseControlledPractice(
+  content: string,
+): ControlledPracticeActivity[] {
+  const blocks: Array<{ title: string; items: string[] }> = [];
+  let current: { title: string; items: string[] } | null = null;
+
+  for (const rawLine of content.split(/\r?\n/)) {
+    const line = rawLine.trim();
+
+    if (!line) {
+      continue;
+    }
+
+    if (line.endsWith(":") && !line.startsWith("- ")) {
+      if (current && current.items.length > 0) {
+        blocks.push(current);
+      }
+
+      current = {
+        title: line.replace(/:$/, "").trim(),
+        items: [],
+      };
+      continue;
+    }
+
+    if (line.startsWith("- ") && current) {
+      current.items.push(line.replace(/^-\s+/, "").trim());
+    }
+  }
+
+  if (current && current.items.length > 0) {
+    blocks.push(current);
+  }
+
+  return blocks
+    .map((block): ControlledPracticeActivity | null => {
+      if (block.items.length === 0) {
+        return null;
+      }
+
+      if (isFillBlankTitle(block.title)) {
+        const items = block.items.map((prompt) => ({
+          prompt,
+          answer: prompt.includes("____") ? inferBlankAnswer(prompt) : null,
+        }));
+
+        return {
+          type: "fillBlank",
+          title: block.title,
+          items,
+        };
+      }
+
+      if (isMultipleChoiceTitle(block.title)) {
+        return {
+          type: "multipleChoice",
+          title: block.title,
+          prompt: "Chọn câu phù hợp",
+          options: block.items,
+          answer: block.items[0],
+        };
+      }
+
+      if (isTapPracticeTitle(block.title)) {
+        return {
+          type: "tapToPractice",
+          title: block.title,
+          options: block.items,
+        };
+      }
+
+      return {
+        type: "tapToPractice",
+        title: block.title,
+        options: block.items,
+      };
+    })
+    .filter((activity): activity is ControlledPracticeActivity =>
+      Boolean(activity),
+    );
 }
 
 export function getLessonBySlug(slug: string[]): LessonDetail | null {

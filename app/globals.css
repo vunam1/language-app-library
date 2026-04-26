@@ -844,6 +844,111 @@ h1 {
   font-weight: 700;
 }
 
+.controlledPractice {
+  display: grid;
+  gap: 14px;
+}
+
+.practiceProgress {
+  width: fit-content;
+  margin: 0;
+  border-radius: 6px;
+  padding: 6px 10px;
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+  font-weight: 700;
+}
+
+.practiceCard {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-soft);
+}
+
+.practiceTitle {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.practiceCard p {
+  margin: 0;
+}
+
+.practiceOptions {
+  display: grid;
+  gap: 8px;
+}
+
+.practiceOptionButton {
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 9px 12px;
+  background: #ffffff;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  text-align: left;
+}
+
+.practiceOptionButton:hover {
+  border-color: var(--accent);
+}
+
+.practiceOptionSelected {
+  border-color: var(--accent);
+}
+
+.practiceOptionCorrect {
+  border-color: #2f7d4f;
+  background: #edf8f0;
+}
+
+.practiceOptionWrong {
+  border-color: #b84a4a;
+  background: #fff0f0;
+}
+
+.practiceInputRow {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) minmax(120px, 220px) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.practiceInput {
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0 10px;
+  background: #ffffff;
+  color: var(--text);
+  font: inherit;
+}
+
+.practiceInput:focus {
+  border-color: var(--accent);
+  outline: 2px solid var(--accent-soft);
+}
+
+.practiceFeedback {
+  margin: 0;
+  font-weight: 700;
+}
+
+.practiceOutput {
+  border: 1px solid #d7e8df;
+  border-radius: 8px;
+  padding: 12px;
+  background: #ffffff;
+  color: var(--accent-dark);
+  font-weight: 700;
+}
+
 .lessonNavigation {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -940,6 +1045,10 @@ h1 {
   .ttsLine {
     grid-template-columns: 1fr;
     display: grid;
+  }
+
+  .practiceInputRow {
+    grid-template-columns: 1fr;
   }
 
   .lessonNavigation {
