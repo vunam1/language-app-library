@@ -105,6 +105,32 @@ h1 {
   gap: 10px;
 }
 
+.monthList {
+  display: grid;
+  gap: 28px;
+}
+
+.monthGroup {
+  display: grid;
+  gap: 16px;
+}
+
+.monthGroup h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.batchGroup {
+  display: grid;
+  gap: 10px;
+}
+
+.batchTitle {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
 .lessonItem {
   display: grid;
   gap: 4px;
@@ -120,6 +146,11 @@ h1 {
 }
 
 .lessonPath {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.lessonMeta {
   color: var(--muted);
   font-size: 0.9rem;
 }
@@ -162,6 +193,35 @@ h1 {
   margin-bottom: 6px;
 }
 
+.lessonNavigation {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.navCard {
+  display: grid;
+  gap: 4px;
+  min-height: 92px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.navCard:hover {
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+.disabledNav {
+  color: var(--muted);
+  font-weight: 400;
+}
+
 @media (max-width: 640px) {
   .page {
     width: min(100% - 24px, 960px);
@@ -174,5 +234,9 @@ h1 {
 
   .markdown {
     padding: 18px;
+  }
+
+  .lessonNavigation {
+    grid-template-columns: 1fr;
   }
 }

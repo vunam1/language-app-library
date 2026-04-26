@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { getAllLessons } from "@/lib/lessons";
+import { getGroupedLessons } from "@/lib/lessons";
 
 export default function LessonsPage() {
-  const lessons = getAllLessons();
+  const monthGroups = getGroupedLessons();
 
   return (
     <main className="page">
@@ -15,12 +15,31 @@ export default function LessonsPage() {
         <Link href="/">Trang chủ</Link>
       </div>
 
-      <div className="lessonList">
-        {lessons.map((lesson) => (
-          <Link className="lessonItem" href={lesson.href} key={lesson.slug}>
-            <span className="lessonPath">{lesson.relativePath}</span>
-            <span className="lessonTitle">{lesson.title}</span>
-          </Link>
+      <div className="monthList">
+        {monthGroups.map((monthGroup) => (
+          <section className="monthGroup" key={monthGroup.month}>
+            <h2>{monthGroup.monthLabel}</h2>
+
+            {monthGroup.batches.map((batchGroup) => (
+              <section className="batchGroup" key={batchGroup.batch}>
+                <h3 className="batchTitle">{batchGroup.batchLabel}</h3>
+                <div className="lessonList">
+                  {batchGroup.lessons.map((lesson) => (
+                    <Link
+                      className="lessonItem"
+                      href={lesson.href}
+                      key={lesson.slug}
+                    >
+                      <span className="lessonMeta">
+                        {lesson.lessonFile} · {lesson.relativePath}
+                      </span>
+                      <span className="lessonTitle">{lesson.title}</span>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </section>
         ))}
       </div>
     </main>

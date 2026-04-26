@@ -10,10 +10,32 @@ export type LessonListItem = {
   slug: string;
   slugSegments: string[];
   href: string;
+  month: string;
+  batch: string;
+  lessonFile: string;
+  monthLabel: string;
+  batchLabel: string;
 };
 
 export type LessonDetail = LessonListItem & {
   content: string;
+};
+
+export type LessonBatchGroup = {
+  batch: string;
+  batchLabel: string;
+  lessons: LessonListItem[];
+};
+
+export type LessonMonthGroup = {
+  month: string;
+  monthLabel: string;
+  batches: LessonBatchGroup[];
+};
+
+export type LessonNavigation = {
+  previous: LessonListItem | null;
+  next: LessonListItem | null;
 };
 
 function isInsideLessonsRoot(filePath: string) {
@@ -72,6 +94,11 @@ function titleFromMarkdown(content: string, fallback: string) {
   return firstHeading?.replace(/^#\s+/, "").trim() || fallback;
 }
 
+function labelFromSegment(segment: string, prefix: string) {
+  const number = segment.match(/\d+/)?.[0];
+  return number ? `${prefix} ${number}` : segment;
+}
+
 function itemFromFile(filePath: string): LessonListItem {
   const content = fs.readFileSync(filePath, "utf8");
   const relativePath = path.relative(LESSONS_ROOT, filePath);
@@ -81,6 +108,8 @@ function itemFromFile(filePath: string): LessonListItem {
     .filter(Boolean);
   const slug = slugSegments.join("/");
   const fallbackTitle = path.basename(filePath, ".md");
+  const [month = "unknown-month", batch = "unknown-batch", lessonFile = fallbackTitle] =
+    slugSegments;
 
   return {
     title: titleFromMarkdown(content, fallbackTitle),
@@ -88,6 +117,11 @@ function itemFromFile(filePath: string): LessonListItem {
     slug,
     slugSegments,
     href: `/lessons/${slug}`,
+    month,
+    batch,
+    lessonFile,
+    monthLabel: labelFromSegment(month, "Month"),
+    batchLabel: labelFromSegment(batch, "Batch"),
   };
 }
 
@@ -95,6 +129,61 @@ export function getAllLessons(): LessonListItem[] {
   return getMarkdownFiles(LESSONS_ROOT)
     .map(itemFromFile)
     .sort((a, b) => a.slug.localeCompare(b.slug, "en", { numeric: true }));
+}
+
+export function getGroupedLessons(): LessonMonthGroup[] {
+  const groups = new Map<string, LessonMonthGroup>();
+
+  for (const lesson of getAllLessons()) {
+    if (!groups.has(lesson.month)) {
+      groups.set(lesson.month, {
+        month: lesson.month,
+        monthLabel: lesson.monthLabel,
+        batches: [],
+      });
+    }
+
+    const monthGroup = groups.get(lesson.month);
+
+    if (!monthGroup) {
+      continue;
+    }
+
+    let batchGroup = monthGroup.batches.find(
+      (batch) => batch.batch === lesson.batch,
+    );
+
+    if (!batchGroup) {
+      batchGroup = {
+        batch: lesson.batch,
+        batchLabel: lesson.batchLabel,
+        lessons: [],
+      };
+      monthGroup.batches.push(batchGroup);
+    }
+
+    batchGroup.lessons.push(lesson);
+  }
+
+  return Array.from(groups.values());
+}
+
+export function getLessonNavigation(slug: string[]): LessonNavigation {
+  const currentSlug = slug.join("/");
+  const lessons = getAllLessons();
+  const currentIndex = lessons.findIndex((lesson) => lesson.slug === currentSlug);
+
+  if (currentIndex === -1) {
+    return {
+      previous: null,
+      next: null,
+    };
+  }
+
+  return {
+    previous: lessons[currentIndex - 1] ?? null,
+    next: lessons[currentIndex + 1] ?? null,
+  };
 }
 
 export function getLessonBySlug(slug: string[]): LessonDetail | null {
