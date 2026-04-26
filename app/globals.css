@@ -320,9 +320,58 @@ h1 {
   background: var(--surface);
 }
 
+.lessonSectionCard.sectionType-vocabulary,
+.lessonSectionCard.sectionType-patterns {
+  background: #fbfdfb;
+}
+
+.lessonSectionCard.sectionType-review,
+.lessonSectionCard.sectionType-completion {
+  border-color: #c9ddd5;
+  background: #f6fbf8;
+}
+
+.lessonSectionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
 .lessonSectionHeading {
-  margin: 0 0 16px;
+  margin: 0;
   font-size: 1.3rem;
+}
+
+.sectionBadge {
+  order: 2;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  padding: 4px 10px;
+  background: #f0f0eb;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.sectionBadge-vocabulary,
+.sectionBadge-patterns,
+.sectionBadge-review,
+.sectionBadge-completion {
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+}
+
+.sectionBadge-dialogue,
+.sectionBadge-speaking {
+  background: #eef1fb;
+  color: #33416c;
+}
+
+.sectionBadge-quiz {
+  background: #fff3d7;
+  color: #70501b;
 }
 
 .sectionMarkdown {
@@ -335,6 +384,87 @@ h1 {
 .sectionMarkdown h1,
 .sectionMarkdown h2 {
   margin-top: 0;
+}
+
+.sectionMarkdown-vocabulary,
+.sectionMarkdown-patterns {
+  padding: 16px;
+  border: 1px solid #d7e8df;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.sectionMarkdown-vocabulary ul,
+.sectionMarkdown-patterns ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.sectionMarkdown-vocabulary li,
+.sectionMarkdown-patterns li {
+  margin-bottom: 0;
+}
+
+.dialogueBlock {
+  display: grid;
+  gap: 10px;
+}
+
+.dialogueRow {
+  display: grid;
+  grid-template-columns: minmax(72px, 120px) 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.dialogueSpeaker {
+  border-radius: 999px;
+  padding: 5px 10px;
+  background: #eef1fb;
+  color: #33416c;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.dialogueText {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #ffffff;
+}
+
+.speakingSection {
+  display: grid;
+  gap: 14px;
+}
+
+.speakingCallout {
+  border: 1px solid #cfd8f1;
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: #f5f7ff;
+}
+
+.speakingCallout p {
+  margin: 0;
+}
+
+.speakingCallout p:last-child {
+  color: #33416c;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.sectionMarkdown-review,
+.sectionMarkdown-completion {
+  padding: 16px;
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  background: #ffffff;
 }
 
 .quizList {
@@ -471,6 +601,26 @@ h1 {
 
   .lessonSectionCard {
     padding: 18px;
+  }
+
+  .lessonSectionHeader {
+    display: grid;
+    gap: 10px;
+  }
+
+  .sectionBadge {
+    order: 0;
+    width: fit-content;
+  }
+
+  .dialogueRow {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .dialogueSpeaker {
+    width: fit-content;
+    text-align: left;
   }
 
   .lessonNavigation {
